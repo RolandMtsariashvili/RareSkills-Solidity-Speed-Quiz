@@ -8,5 +8,9 @@ contract ConvertToNegative {
         // return -x
         // if -x cannot be computed, revert with "TooBig()"
         // do not hardcode any constants
+        if (x >  (uint256(1) << 255)) {
+            revert TooBig();
+        }
+        return -int256(x);
     }
-}
+} 
