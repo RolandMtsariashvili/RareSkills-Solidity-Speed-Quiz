@@ -20,5 +20,8 @@ contract ReadStruct {
         // in reversed order, i.e. x is y and y is x
         // do not redeclare the struct in this contract or 
         // reference it in ViewContract
+        ViewContract contr = ViewContract(a);
+        (uint sx, uint sy) = contr.s();
+        return (sy, sx);
     }
 }
