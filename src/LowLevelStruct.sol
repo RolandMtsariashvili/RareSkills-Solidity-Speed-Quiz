@@ -1,6 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity 0.8.28;
 
+interface IPoint {
+    struct Point {
+        uint256 x;
+        uint256 y;
+    }
+    function point() external returns (uint256, uint256);
+}
+
 contract LowLevelStruct {
     function main(address a) public returns (uint256 x, uint256 y) {
         // call function "point()" on address a
@@ -12,7 +20,13 @@ contract LowLevelStruct {
         // }
         // return the two fields
         // revert if the low level call reverts
+        (bool ok, bytes memory data) = a.call(abi.encodeWithSignature("point()"));
+        if (!ok) revert();
 
+        (x, y) = abi.decode(data, (uint256, uint256));
+        return (x, y);
         // bonus challenge: use an interface and a high level call to accomplish the same task
+        // (x, y) = IPoint(a).point();
+        // return (x, y);
     }
 }   
